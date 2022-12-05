@@ -1,0 +1,6 @@
+node_modules
+update_src.sh
+.idea
+*.log
+.DS_Store
+dist/
