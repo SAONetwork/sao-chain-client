@@ -21,6 +21,8 @@ export interface Proposal {
   size: number;
   /** 0: new|update, 1:force-push */
   operation: number;
+  readonlyDids: string[];
+  readwriteDids: string[];
 }
 
 function createBaseProposal(): Proposal {
@@ -40,6 +42,8 @@ function createBaseProposal(): Proposal {
     extendInfo: "",
     size: 0,
     operation: 0,
+    readonlyDids: [],
+    readwriteDids: [],
   };
 }
 
@@ -89,6 +93,12 @@ export const Proposal = {
     }
     if (message.operation !== 0) {
       writer.uint32(120).uint32(message.operation);
+    }
+    for (const v of message.readonlyDids) {
+      writer.uint32(130).string(v!);
+    }
+    for (const v of message.readwriteDids) {
+      writer.uint32(138).string(v!);
     }
     return writer;
   },
@@ -145,6 +155,12 @@ export const Proposal = {
         case 15:
           message.operation = reader.uint32();
           break;
+        case 16:
+          message.readonlyDids.push(reader.string());
+          break;
+        case 17:
+          message.readwriteDids.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -170,6 +186,8 @@ export const Proposal = {
       extendInfo: isSet(object.extendInfo) ? String(object.extendInfo) : "",
       size: isSet(object.size) ? Number(object.size) : 0,
       operation: isSet(object.operation) ? Number(object.operation) : 0,
+      readonlyDids: Array.isArray(object?.readonlyDids) ? object.readonlyDids.map((e: any) => String(e)) : [],
+      readwriteDids: Array.isArray(object?.readwriteDids) ? object.readwriteDids.map((e: any) => String(e)) : [],
     };
   },
 
@@ -194,6 +212,16 @@ export const Proposal = {
     message.extendInfo !== undefined && (obj.extendInfo = message.extendInfo);
     message.size !== undefined && (obj.size = Math.round(message.size));
     message.operation !== undefined && (obj.operation = Math.round(message.operation));
+    if (message.readonlyDids) {
+      obj.readonlyDids = message.readonlyDids.map((e) => e);
+    } else {
+      obj.readonlyDids = [];
+    }
+    if (message.readwriteDids) {
+      obj.readwriteDids = message.readwriteDids.map((e) => e);
+    } else {
+      obj.readwriteDids = [];
+    }
     return obj;
   },
 
@@ -214,6 +242,8 @@ export const Proposal = {
     message.extendInfo = object.extendInfo ?? "";
     message.size = object.size ?? 0;
     message.operation = object.operation ?? 0;
+    message.readonlyDids = object.readonlyDids?.map((e) => e) || [];
+    message.readwriteDids = object.readwriteDids?.map((e) => e) || [];
     return message;
   },
 };

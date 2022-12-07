@@ -4,17 +4,17 @@ import { BindingProof } from "./binding_proof";
 
 export const protobufPackage = "saonetwork.sao.did";
 
-export interface DidBindingProofs {
+export interface DidBingingProof {
   accountId: string;
   proof: BindingProof | undefined;
 }
 
-function createBaseDidBindingProofs(): DidBindingProofs {
+function createBaseDidBingingProof(): DidBingingProof {
   return { accountId: "", proof: undefined };
 }
 
-export const DidBindingProofs = {
-  encode(message: DidBindingProofs, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const DidBingingProof = {
+  encode(message: DidBingingProof, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
@@ -24,10 +24,10 @@ export const DidBindingProofs = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): DidBindingProofs {
+  decode(input: _m0.Reader | Uint8Array, length?: number): DidBingingProof {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDidBindingProofs();
+    const message = createBaseDidBingingProof();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -45,22 +45,22 @@ export const DidBindingProofs = {
     return message;
   },
 
-  fromJSON(object: any): DidBindingProofs {
+  fromJSON(object: any): DidBingingProof {
     return {
       accountId: isSet(object.accountId) ? String(object.accountId) : "",
       proof: isSet(object.proof) ? BindingProof.fromJSON(object.proof) : undefined,
     };
   },
 
-  toJSON(message: DidBindingProofs): unknown {
+  toJSON(message: DidBingingProof): unknown {
     const obj: any = {};
     message.accountId !== undefined && (obj.accountId = message.accountId);
     message.proof !== undefined && (obj.proof = message.proof ? BindingProof.toJSON(message.proof) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<DidBindingProofs>, I>>(object: I): DidBindingProofs {
-    const message = createBaseDidBindingProofs();
+  fromPartial<I extends Exact<DeepPartial<DidBingingProof>, I>>(object: I): DidBingingProof {
+    const message = createBaseDidBingingProof();
     message.accountId = object.accountId ?? "";
     message.proof = (object.proof !== undefined && object.proof !== null)
       ? BindingProof.fromPartial(object.proof)

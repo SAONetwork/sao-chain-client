@@ -30,6 +30,8 @@ export interface ModelMetadata {
 
   /** @format uint64 */
   createdAt?: string;
+  readonlyDids?: string[];
+  readwriteDids?: string[];
 }
 
 export interface ModelModel {

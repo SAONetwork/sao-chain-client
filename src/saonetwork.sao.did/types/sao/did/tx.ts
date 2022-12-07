@@ -61,22 +61,6 @@ export interface MsgAddPastSeed {
 export interface MsgAddPastSeedResponse {
 }
 
-export interface MsgCleanupSidDocuments {
-  creator: string;
-  rootDocId: string;
-}
-
-export interface MsgCleanupSidDocumentsResponse {
-}
-
-export interface MsgCleanupPastSeeds {
-  creator: string;
-  did: string;
-}
-
-export interface MsgCleanupPastSeedsResponse {
-}
-
 export interface MsgResetStore {
   creator: string;
 }
@@ -87,9 +71,22 @@ export interface MsgResetStoreResponse {
 export interface MsgUpdatePaymentAddress {
   creator: string;
   accountId: string;
+  did: string;
 }
 
 export interface MsgUpdatePaymentAddressResponse {
+}
+
+export interface MsgBinding {
+  creator: string;
+  accountId: string;
+  rootDocId: string;
+  keys: PubKey[];
+  accountAuth: AccountAuth | undefined;
+  proof: BindingProof | undefined;
+}
+
+export interface MsgBindingResponse {
 }
 
 function createBaseMsgAddBinding(): MsgAddBinding {
@@ -753,200 +750,6 @@ export const MsgAddPastSeedResponse = {
   },
 };
 
-function createBaseMsgCleanupSidDocuments(): MsgCleanupSidDocuments {
-  return { creator: "", rootDocId: "" };
-}
-
-export const MsgCleanupSidDocuments = {
-  encode(message: MsgCleanupSidDocuments, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.rootDocId !== "") {
-      writer.uint32(18).string(message.rootDocId);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCleanupSidDocuments {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgCleanupSidDocuments();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.creator = reader.string();
-          break;
-        case 2:
-          message.rootDocId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgCleanupSidDocuments {
-    return {
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      rootDocId: isSet(object.rootDocId) ? String(object.rootDocId) : "",
-    };
-  },
-
-  toJSON(message: MsgCleanupSidDocuments): unknown {
-    const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.rootDocId !== undefined && (obj.rootDocId = message.rootDocId);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<MsgCleanupSidDocuments>, I>>(object: I): MsgCleanupSidDocuments {
-    const message = createBaseMsgCleanupSidDocuments();
-    message.creator = object.creator ?? "";
-    message.rootDocId = object.rootDocId ?? "";
-    return message;
-  },
-};
-
-function createBaseMsgCleanupSidDocumentsResponse(): MsgCleanupSidDocumentsResponse {
-  return {};
-}
-
-export const MsgCleanupSidDocumentsResponse = {
-  encode(_: MsgCleanupSidDocumentsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCleanupSidDocumentsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgCleanupSidDocumentsResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): MsgCleanupSidDocumentsResponse {
-    return {};
-  },
-
-  toJSON(_: MsgCleanupSidDocumentsResponse): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<MsgCleanupSidDocumentsResponse>, I>>(_: I): MsgCleanupSidDocumentsResponse {
-    const message = createBaseMsgCleanupSidDocumentsResponse();
-    return message;
-  },
-};
-
-function createBaseMsgCleanupPastSeeds(): MsgCleanupPastSeeds {
-  return { creator: "", did: "" };
-}
-
-export const MsgCleanupPastSeeds = {
-  encode(message: MsgCleanupPastSeeds, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.creator !== "") {
-      writer.uint32(10).string(message.creator);
-    }
-    if (message.did !== "") {
-      writer.uint32(18).string(message.did);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCleanupPastSeeds {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgCleanupPastSeeds();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.creator = reader.string();
-          break;
-        case 2:
-          message.did = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): MsgCleanupPastSeeds {
-    return {
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      did: isSet(object.did) ? String(object.did) : "",
-    };
-  },
-
-  toJSON(message: MsgCleanupPastSeeds): unknown {
-    const obj: any = {};
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.did !== undefined && (obj.did = message.did);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<MsgCleanupPastSeeds>, I>>(object: I): MsgCleanupPastSeeds {
-    const message = createBaseMsgCleanupPastSeeds();
-    message.creator = object.creator ?? "";
-    message.did = object.did ?? "";
-    return message;
-  },
-};
-
-function createBaseMsgCleanupPastSeedsResponse(): MsgCleanupPastSeedsResponse {
-  return {};
-}
-
-export const MsgCleanupPastSeedsResponse = {
-  encode(_: MsgCleanupPastSeedsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCleanupPastSeedsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgCleanupPastSeedsResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): MsgCleanupPastSeedsResponse {
-    return {};
-  },
-
-  toJSON(_: MsgCleanupPastSeedsResponse): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<MsgCleanupPastSeedsResponse>, I>>(_: I): MsgCleanupPastSeedsResponse {
-    const message = createBaseMsgCleanupPastSeedsResponse();
-    return message;
-  },
-};
-
 function createBaseMsgResetStore(): MsgResetStore {
   return { creator: "" };
 }
@@ -1034,7 +837,7 @@ export const MsgResetStoreResponse = {
 };
 
 function createBaseMsgUpdatePaymentAddress(): MsgUpdatePaymentAddress {
-  return { creator: "", accountId: "" };
+  return { creator: "", accountId: "", did: "" };
 }
 
 export const MsgUpdatePaymentAddress = {
@@ -1044,6 +847,9 @@ export const MsgUpdatePaymentAddress = {
     }
     if (message.accountId !== "") {
       writer.uint32(18).string(message.accountId);
+    }
+    if (message.did !== "") {
+      writer.uint32(26).string(message.did);
     }
     return writer;
   },
@@ -1061,6 +867,9 @@ export const MsgUpdatePaymentAddress = {
         case 2:
           message.accountId = reader.string();
           break;
+        case 3:
+          message.did = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1073,6 +882,7 @@ export const MsgUpdatePaymentAddress = {
     return {
       creator: isSet(object.creator) ? String(object.creator) : "",
       accountId: isSet(object.accountId) ? String(object.accountId) : "",
+      did: isSet(object.did) ? String(object.did) : "",
     };
   },
 
@@ -1080,6 +890,7 @@ export const MsgUpdatePaymentAddress = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.accountId !== undefined && (obj.accountId = message.accountId);
+    message.did !== undefined && (obj.did = message.did);
     return obj;
   },
 
@@ -1087,6 +898,7 @@ export const MsgUpdatePaymentAddress = {
     const message = createBaseMsgUpdatePaymentAddress();
     message.creator = object.creator ?? "";
     message.accountId = object.accountId ?? "";
+    message.did = object.did ?? "";
     return message;
   },
 };
@@ -1130,6 +942,148 @@ export const MsgUpdatePaymentAddressResponse = {
   },
 };
 
+function createBaseMsgBinding(): MsgBinding {
+  return { creator: "", accountId: "", rootDocId: "", keys: [], accountAuth: undefined, proof: undefined };
+}
+
+export const MsgBinding = {
+  encode(message: MsgBinding, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.accountId !== "") {
+      writer.uint32(18).string(message.accountId);
+    }
+    if (message.rootDocId !== "") {
+      writer.uint32(26).string(message.rootDocId);
+    }
+    for (const v of message.keys) {
+      PubKey.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.accountAuth !== undefined) {
+      AccountAuth.encode(message.accountAuth, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.proof !== undefined) {
+      BindingProof.encode(message.proof, writer.uint32(50).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgBinding {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgBinding();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.accountId = reader.string();
+          break;
+        case 3:
+          message.rootDocId = reader.string();
+          break;
+        case 4:
+          message.keys.push(PubKey.decode(reader, reader.uint32()));
+          break;
+        case 5:
+          message.accountAuth = AccountAuth.decode(reader, reader.uint32());
+          break;
+        case 6:
+          message.proof = BindingProof.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgBinding {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      accountId: isSet(object.accountId) ? String(object.accountId) : "",
+      rootDocId: isSet(object.rootDocId) ? String(object.rootDocId) : "",
+      keys: Array.isArray(object?.keys) ? object.keys.map((e: any) => PubKey.fromJSON(e)) : [],
+      accountAuth: isSet(object.accountAuth) ? AccountAuth.fromJSON(object.accountAuth) : undefined,
+      proof: isSet(object.proof) ? BindingProof.fromJSON(object.proof) : undefined,
+    };
+  },
+
+  toJSON(message: MsgBinding): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.accountId !== undefined && (obj.accountId = message.accountId);
+    message.rootDocId !== undefined && (obj.rootDocId = message.rootDocId);
+    if (message.keys) {
+      obj.keys = message.keys.map((e) => e ? PubKey.toJSON(e) : undefined);
+    } else {
+      obj.keys = [];
+    }
+    message.accountAuth !== undefined
+      && (obj.accountAuth = message.accountAuth ? AccountAuth.toJSON(message.accountAuth) : undefined);
+    message.proof !== undefined && (obj.proof = message.proof ? BindingProof.toJSON(message.proof) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgBinding>, I>>(object: I): MsgBinding {
+    const message = createBaseMsgBinding();
+    message.creator = object.creator ?? "";
+    message.accountId = object.accountId ?? "";
+    message.rootDocId = object.rootDocId ?? "";
+    message.keys = object.keys?.map((e) => PubKey.fromPartial(e)) || [];
+    message.accountAuth = (object.accountAuth !== undefined && object.accountAuth !== null)
+      ? AccountAuth.fromPartial(object.accountAuth)
+      : undefined;
+    message.proof = (object.proof !== undefined && object.proof !== null)
+      ? BindingProof.fromPartial(object.proof)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseMsgBindingResponse(): MsgBindingResponse {
+  return {};
+}
+
+export const MsgBindingResponse = {
+  encode(_: MsgBindingResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgBindingResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgBindingResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgBindingResponse {
+    return {};
+  },
+
+  toJSON(_: MsgBindingResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgBindingResponse>, I>>(_: I): MsgBindingResponse {
+    const message = createBaseMsgBindingResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   AddBinding(request: MsgAddBinding): Promise<MsgAddBindingResponse>;
@@ -1138,11 +1092,10 @@ export interface Msg {
   UpdateAccountAuths(request: MsgUpdateAccountAuths): Promise<MsgUpdateAccountAuthsResponse>;
   UpdateSidDocument(request: MsgUpdateSidDocument): Promise<MsgUpdateSidDocumentResponse>;
   AddPastSeed(request: MsgAddPastSeed): Promise<MsgAddPastSeedResponse>;
-  CleanupSidDocuments(request: MsgCleanupSidDocuments): Promise<MsgCleanupSidDocumentsResponse>;
-  CleanupPastSeeds(request: MsgCleanupPastSeeds): Promise<MsgCleanupPastSeedsResponse>;
   ResetStore(request: MsgResetStore): Promise<MsgResetStoreResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   UpdatePaymentAddress(request: MsgUpdatePaymentAddress): Promise<MsgUpdatePaymentAddressResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  Binding(request: MsgBinding): Promise<MsgBindingResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -1155,10 +1108,9 @@ export class MsgClientImpl implements Msg {
     this.UpdateAccountAuths = this.UpdateAccountAuths.bind(this);
     this.UpdateSidDocument = this.UpdateSidDocument.bind(this);
     this.AddPastSeed = this.AddPastSeed.bind(this);
-    this.CleanupSidDocuments = this.CleanupSidDocuments.bind(this);
-    this.CleanupPastSeeds = this.CleanupPastSeeds.bind(this);
     this.ResetStore = this.ResetStore.bind(this);
     this.UpdatePaymentAddress = this.UpdatePaymentAddress.bind(this);
+    this.Binding = this.Binding.bind(this);
   }
   AddBinding(request: MsgAddBinding): Promise<MsgAddBindingResponse> {
     const data = MsgAddBinding.encode(request).finish();
@@ -1196,18 +1148,6 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) => MsgAddPastSeedResponse.decode(new _m0.Reader(data)));
   }
 
-  CleanupSidDocuments(request: MsgCleanupSidDocuments): Promise<MsgCleanupSidDocumentsResponse> {
-    const data = MsgCleanupSidDocuments.encode(request).finish();
-    const promise = this.rpc.request("saonetwork.sao.did.Msg", "CleanupSidDocuments", data);
-    return promise.then((data) => MsgCleanupSidDocumentsResponse.decode(new _m0.Reader(data)));
-  }
-
-  CleanupPastSeeds(request: MsgCleanupPastSeeds): Promise<MsgCleanupPastSeedsResponse> {
-    const data = MsgCleanupPastSeeds.encode(request).finish();
-    const promise = this.rpc.request("saonetwork.sao.did.Msg", "CleanupPastSeeds", data);
-    return promise.then((data) => MsgCleanupPastSeedsResponse.decode(new _m0.Reader(data)));
-  }
-
   ResetStore(request: MsgResetStore): Promise<MsgResetStoreResponse> {
     const data = MsgResetStore.encode(request).finish();
     const promise = this.rpc.request("saonetwork.sao.did.Msg", "ResetStore", data);
@@ -1218,6 +1158,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgUpdatePaymentAddress.encode(request).finish();
     const promise = this.rpc.request("saonetwork.sao.did.Msg", "UpdatePaymentAddress", data);
     return promise.then((data) => MsgUpdatePaymentAddressResponse.decode(new _m0.Reader(data)));
+  }
+
+  Binding(request: MsgBinding): Promise<MsgBindingResponse> {
+    const data = MsgBinding.encode(request).finish();
+    const promise = this.rpc.request("saonetwork.sao.did.Msg", "Binding", data);
+    return promise.then((data) => MsgBindingResponse.decode(new _m0.Reader(data)));
   }
 }
 

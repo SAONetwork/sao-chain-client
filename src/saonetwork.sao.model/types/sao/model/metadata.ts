@@ -19,6 +19,8 @@ export interface Metadata {
   rule: string;
   duration: number;
   createdAt: number;
+  readonlyDids: string[];
+  readwriteDids: string[];
 }
 
 function createBaseMetadata(): Metadata {
@@ -37,6 +39,8 @@ function createBaseMetadata(): Metadata {
     rule: "",
     duration: 0,
     createdAt: 0,
+    readonlyDids: [],
+    readwriteDids: [],
   };
 }
 
@@ -83,6 +87,12 @@ export const Metadata = {
     }
     if (message.createdAt !== 0) {
       writer.uint32(112).uint64(message.createdAt);
+    }
+    for (const v of message.readonlyDids) {
+      writer.uint32(122).string(v!);
+    }
+    for (const v of message.readwriteDids) {
+      writer.uint32(130).string(v!);
     }
     return writer;
   },
@@ -136,6 +146,12 @@ export const Metadata = {
         case 14:
           message.createdAt = longToNumber(reader.uint64() as Long);
           break;
+        case 15:
+          message.readonlyDids.push(reader.string());
+          break;
+        case 16:
+          message.readwriteDids.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -160,6 +176,8 @@ export const Metadata = {
       rule: isSet(object.rule) ? String(object.rule) : "",
       duration: isSet(object.duration) ? Number(object.duration) : 0,
       createdAt: isSet(object.createdAt) ? Number(object.createdAt) : 0,
+      readonlyDids: Array.isArray(object?.readonlyDids) ? object.readonlyDids.map((e: any) => String(e)) : [],
+      readwriteDids: Array.isArray(object?.readwriteDids) ? object.readwriteDids.map((e: any) => String(e)) : [],
     };
   },
 
@@ -187,6 +205,16 @@ export const Metadata = {
     message.rule !== undefined && (obj.rule = message.rule);
     message.duration !== undefined && (obj.duration = Math.round(message.duration));
     message.createdAt !== undefined && (obj.createdAt = Math.round(message.createdAt));
+    if (message.readonlyDids) {
+      obj.readonlyDids = message.readonlyDids.map((e) => e);
+    } else {
+      obj.readonlyDids = [];
+    }
+    if (message.readwriteDids) {
+      obj.readwriteDids = message.readwriteDids.map((e) => e);
+    } else {
+      obj.readwriteDids = [];
+    }
     return obj;
   },
 
@@ -206,6 +234,8 @@ export const Metadata = {
     message.rule = object.rule ?? "";
     message.duration = object.duration ?? 0;
     message.createdAt = object.createdAt ?? 0;
+    message.readonlyDids = object.readonlyDids?.map((e) => e) || [];
+    message.readwriteDids = object.readwriteDids?.map((e) => e) || [];
     return message;
   },
 };
