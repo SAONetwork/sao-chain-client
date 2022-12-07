@@ -4,3 +4,4 @@ update_src.sh
 *.log
 .DS_Store
 dist/
+yarn-error.log
