@@ -2,6 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { JwsSignature } from "./jws_signature";
+import { PermissionProposal } from "./permission_proposal";
 import { Proposal } from "./proposal";
 import { RenewProposal } from "./renew_proposal";
 
@@ -72,6 +73,15 @@ export interface MsgRenewResponse {
 export interface MsgRenewResponse_ResultEntry {
   key: string;
   value: string;
+}
+
+export interface MsgUpdataPermission {
+  creator: string;
+  proposal: PermissionProposal | undefined;
+  jwsSignature: JwsSignature | undefined;
+}
+
+export interface MsgUpdataPermissionResponse {
 }
 
 function createBaseMsgCancel(): MsgCancel {
@@ -891,6 +901,118 @@ export const MsgRenewResponse_ResultEntry = {
   },
 };
 
+function createBaseMsgUpdataPermission(): MsgUpdataPermission {
+  return { creator: "", proposal: undefined, jwsSignature: undefined };
+}
+
+export const MsgUpdataPermission = {
+  encode(message: MsgUpdataPermission, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.proposal !== undefined) {
+      PermissionProposal.encode(message.proposal, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.jwsSignature !== undefined) {
+      JwsSignature.encode(message.jwsSignature, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdataPermission {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdataPermission();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.proposal = PermissionProposal.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.jwsSignature = JwsSignature.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgUpdataPermission {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      proposal: isSet(object.proposal) ? PermissionProposal.fromJSON(object.proposal) : undefined,
+      jwsSignature: isSet(object.jwsSignature) ? JwsSignature.fromJSON(object.jwsSignature) : undefined,
+    };
+  },
+
+  toJSON(message: MsgUpdataPermission): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.proposal !== undefined
+      && (obj.proposal = message.proposal ? PermissionProposal.toJSON(message.proposal) : undefined);
+    message.jwsSignature !== undefined
+      && (obj.jwsSignature = message.jwsSignature ? JwsSignature.toJSON(message.jwsSignature) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdataPermission>, I>>(object: I): MsgUpdataPermission {
+    const message = createBaseMsgUpdataPermission();
+    message.creator = object.creator ?? "";
+    message.proposal = (object.proposal !== undefined && object.proposal !== null)
+      ? PermissionProposal.fromPartial(object.proposal)
+      : undefined;
+    message.jwsSignature = (object.jwsSignature !== undefined && object.jwsSignature !== null)
+      ? JwsSignature.fromPartial(object.jwsSignature)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseMsgUpdataPermissionResponse(): MsgUpdataPermissionResponse {
+  return {};
+}
+
+export const MsgUpdataPermissionResponse = {
+  encode(_: MsgUpdataPermissionResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgUpdataPermissionResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgUpdataPermissionResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgUpdataPermissionResponse {
+    return {};
+  },
+
+  toJSON(_: MsgUpdataPermissionResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgUpdataPermissionResponse>, I>>(_: I): MsgUpdataPermissionResponse {
+    const message = createBaseMsgUpdataPermissionResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   Store(request: MsgStore): Promise<MsgStoreResponse>;
@@ -899,8 +1021,9 @@ export interface Msg {
   Reject(request: MsgReject): Promise<MsgRejectResponse>;
   Terminate(request: MsgTerminate): Promise<MsgTerminateResponse>;
   Ready(request: MsgReady): Promise<MsgReadyResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   Renew(request: MsgRenew): Promise<MsgRenewResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  UpdataPermission(request: MsgUpdataPermission): Promise<MsgUpdataPermissionResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -914,6 +1037,7 @@ export class MsgClientImpl implements Msg {
     this.Terminate = this.Terminate.bind(this);
     this.Ready = this.Ready.bind(this);
     this.Renew = this.Renew.bind(this);
+    this.UpdataPermission = this.UpdataPermission.bind(this);
   }
   Store(request: MsgStore): Promise<MsgStoreResponse> {
     const data = MsgStore.encode(request).finish();
@@ -955,6 +1079,12 @@ export class MsgClientImpl implements Msg {
     const data = MsgRenew.encode(request).finish();
     const promise = this.rpc.request("saonetwork.sao.sao.Msg", "Renew", data);
     return promise.then((data) => MsgRenewResponse.decode(new _m0.Reader(data)));
+  }
+
+  UpdataPermission(request: MsgUpdataPermission): Promise<MsgUpdataPermissionResponse> {
+    const data = MsgUpdataPermission.encode(request).finish();
+    const promise = this.rpc.request("saonetwork.sao.sao.Msg", "UpdataPermission", data);
+    return promise.then((data) => MsgUpdataPermissionResponse.decode(new _m0.Reader(data)));
   }
 }
 

@@ -32,7 +32,7 @@ export interface DidBindingProof {
   timestamp?: string;
 }
 
-export interface DidDidBindingProofs {
+export interface DidDidBingingProof {
   accountId?: string;
   proof?: DidBindingProof;
 }
@@ -43,9 +43,7 @@ export type DidMsgAddBindingResponse = object;
 
 export type DidMsgAddPastSeedResponse = object;
 
-export type DidMsgCleanupPastSeedsResponse = object;
-
-export type DidMsgCleanupSidDocumentsResponse = object;
+export type DidMsgBindingResponse = object;
 
 export type DidMsgResetStoreResponse = object;
 
@@ -109,8 +107,8 @@ export interface DidQueryAllAccountListResponse {
   pagination?: V1Beta1PageResponse;
 }
 
-export interface DidQueryAllDidBindingProofsResponse {
-  didBindingProofs?: DidDidBindingProofs[];
+export interface DidQueryAllDidBingingProofResponse {
+  DidBingingProof?: DidDidBingingProof[];
 
   /**
    * PageResponse is to be embedded in gRPC response messages where the
@@ -196,8 +194,8 @@ export interface DidQueryGetAllAccountAuthsResponse {
   accountAuths?: DidAccountAuth[];
 }
 
-export interface DidQueryGetDidBindingProofsResponse {
-  didBindingProofs?: DidDidBindingProofs;
+export interface DidQueryGetDidBingingProofResponse {
+  DidBingingProof?: DidDidBingingProof;
 }
 
 export interface DidQueryGetPastSeedsResponse {
@@ -530,11 +528,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryDidBindingProofsAll
-   * @summary Queries a list of DidBindingProofs items.
-   * @request GET:/SaoNetwork/sao/did/did_binding_proofs
+   * @name QueryDidBingingProofAll
+   * @summary Queries a list of DidBingingProof items.
+   * @request GET:/SaoNetwork/sao/did/did_binding_proof
    */
-  queryDidBindingProofsAll = (
+  queryDidBingingProofAll = (
     query?: {
       "pagination.key"?: string;
       "pagination.offset"?: string;
@@ -544,8 +542,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     },
     params: RequestParams = {},
   ) =>
-    this.request<DidQueryAllDidBindingProofsResponse, RpcStatus>({
-      path: `/SaoNetwork/sao/did/did_binding_proofs`,
+    this.request<DidQueryAllDidBingingProofResponse, RpcStatus>({
+      path: `/SaoNetwork/sao/did/did_binding_proof`,
       method: "GET",
       query: query,
       format: "json",
@@ -556,13 +554,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
-   * @name QueryDidBindingProofs
-   * @summary Queries a DidBindingProofs by index.
-   * @request GET:/SaoNetwork/sao/did/did_binding_proofs/{accountId}
+   * @name QueryDidBingingProof
+   * @summary Queries a DidBingingProof by index.
+   * @request GET:/SaoNetwork/sao/did/did_binding_proof/{accountId}
    */
-  queryDidBindingProofs = (accountId: string, params: RequestParams = {}) =>
-    this.request<DidQueryGetDidBindingProofsResponse, RpcStatus>({
-      path: `/SaoNetwork/sao/did/did_binding_proofs/${accountId}`,
+  queryDidBingingProof = (accountId: string, params: RequestParams = {}) =>
+    this.request<DidQueryGetDidBingingProofResponse, RpcStatus>({
+      path: `/SaoNetwork/sao/did/did_binding_proof/${accountId}`,
       method: "GET",
       format: "json",
       ...params,

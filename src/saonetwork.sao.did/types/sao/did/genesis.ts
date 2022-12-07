@@ -2,7 +2,7 @@
 import _m0 from "protobufjs/minimal";
 import { AccountAuth } from "./account_auth";
 import { AccountList } from "./account_list";
-import { DidBindingProofs } from "./did_binding_proofs";
+import { DidBingingProof } from "./did_binding_proof";
 import { Params } from "./params";
 import { PastSeeds } from "./past_seeds";
 import { PaymentAddress } from "./payment_address";
@@ -14,7 +14,7 @@ export const protobufPackage = "saonetwork.sao.did";
 /** GenesisState defines the did module's genesis state. */
 export interface GenesisState {
   params: Params | undefined;
-  didBindingProofsList: DidBindingProofs[];
+  DidBingingProofList: DidBingingProof[];
   accountListList: AccountList[];
   accountAuthList: AccountAuth[];
   sidDocumentList: SidDocument[];
@@ -27,7 +27,7 @@ export interface GenesisState {
 function createBaseGenesisState(): GenesisState {
   return {
     params: undefined,
-    didBindingProofsList: [],
+    DidBingingProofList: [],
     accountListList: [],
     accountAuthList: [],
     sidDocumentList: [],
@@ -42,8 +42,8 @@ export const GenesisState = {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.didBindingProofsList) {
-      DidBindingProofs.encode(v!, writer.uint32(18).fork()).ldelim();
+    for (const v of message.DidBingingProofList) {
+      DidBingingProof.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     for (const v of message.accountListList) {
       AccountList.encode(v!, writer.uint32(26).fork()).ldelim();
@@ -77,7 +77,7 @@ export const GenesisState = {
           message.params = Params.decode(reader, reader.uint32());
           break;
         case 2:
-          message.didBindingProofsList.push(DidBindingProofs.decode(reader, reader.uint32()));
+          message.DidBingingProofList.push(DidBingingProof.decode(reader, reader.uint32()));
           break;
         case 3:
           message.accountListList.push(AccountList.decode(reader, reader.uint32()));
@@ -108,8 +108,8 @@ export const GenesisState = {
   fromJSON(object: any): GenesisState {
     return {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
-      didBindingProofsList: Array.isArray(object?.didBindingProofsList)
-        ? object.didBindingProofsList.map((e: any) => DidBindingProofs.fromJSON(e))
+      DidBingingProofList: Array.isArray(object?.DidBingingProofList)
+        ? object.DidBingingProofList.map((e: any) => DidBingingProof.fromJSON(e))
         : [],
       accountListList: Array.isArray(object?.accountListList)
         ? object.accountListList.map((e: any) => AccountList.fromJSON(e))
@@ -135,10 +135,10 @@ export const GenesisState = {
   toJSON(message: GenesisState): unknown {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
-    if (message.didBindingProofsList) {
-      obj.didBindingProofsList = message.didBindingProofsList.map((e) => e ? DidBindingProofs.toJSON(e) : undefined);
+    if (message.DidBingingProofList) {
+      obj.DidBingingProofList = message.DidBingingProofList.map((e) => e ? DidBingingProof.toJSON(e) : undefined);
     } else {
-      obj.didBindingProofsList = [];
+      obj.DidBingingProofList = [];
     }
     if (message.accountListList) {
       obj.accountListList = message.accountListList.map((e) => e ? AccountList.toJSON(e) : undefined);
@@ -180,7 +180,7 @@ export const GenesisState = {
     message.params = (object.params !== undefined && object.params !== null)
       ? Params.fromPartial(object.params)
       : undefined;
-    message.didBindingProofsList = object.didBindingProofsList?.map((e) => DidBindingProofs.fromPartial(e)) || [];
+    message.DidBingingProofList = object.DidBingingProofList?.map((e) => DidBingingProof.fromPartial(e)) || [];
     message.accountListList = object.accountListList?.map((e) => AccountList.fromPartial(e)) || [];
     message.accountAuthList = object.accountAuthList?.map((e) => AccountAuth.fromPartial(e)) || [];
     message.sidDocumentList = object.sidDocumentList?.map((e) => SidDocument.fromPartial(e)) || [];

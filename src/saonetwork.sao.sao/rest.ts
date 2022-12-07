@@ -44,10 +44,19 @@ export interface SaoMsgStoreResponse {
 
 export type SaoMsgTerminateResponse = object;
 
+export type SaoMsgUpdataPermissionResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
 export type SaoParams = object;
+
+export interface SaoPermissionProposal {
+  owner?: string;
+  dataId?: string;
+  readonlyDids?: string[];
+  readwriteDids?: string[];
+}
 
 export interface SaoProposal {
   owner?: string;
@@ -78,6 +87,8 @@ export interface SaoProposal {
    * @format int64
    */
   operation?: number;
+  readonlyDids?: string[];
+  readwriteDids?: string[];
 }
 
 /**
