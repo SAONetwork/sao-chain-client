@@ -15,6 +15,9 @@
   },
   "main": "./dist/index.js",
   "type": "module",
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
