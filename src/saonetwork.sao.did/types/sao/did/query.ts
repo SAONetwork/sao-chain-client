@@ -3,7 +3,7 @@ import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
 import { AccountAuth } from "./account_auth";
 import { AccountList } from "./account_list";
-import { DidBingingProof } from "./did_binding_proof";
+import { DidBindingProof } from "./did_binding_proof";
 import { Params } from "./params";
 import { PastSeeds } from "./past_seeds";
 import { PaymentAddress } from "./payment_address";
@@ -22,20 +22,20 @@ export interface QueryParamsResponse {
   params: Params | undefined;
 }
 
-export interface QueryGetDidBingingProofRequest {
+export interface QueryGetDidBindingProofRequest {
   accountId: string;
 }
 
-export interface QueryGetDidBingingProofResponse {
-  DidBingingProof: DidBingingProof | undefined;
+export interface QueryGetDidBindingProofResponse {
+  DidBindingProof: DidBindingProof | undefined;
 }
 
-export interface QueryAllDidBingingProofRequest {
+export interface QueryAllDidBindingProofRequest {
   pagination: PageRequest | undefined;
 }
 
-export interface QueryAllDidBingingProofResponse {
-  DidBingingProof: DidBingingProof[];
+export interface QueryAllDidBindingProofResponse {
+  DidBindingProof: DidBindingProof[];
   pagination: PageResponse | undefined;
 }
 
@@ -237,22 +237,22 @@ export const QueryParamsResponse = {
   },
 };
 
-function createBaseQueryGetDidBingingProofRequest(): QueryGetDidBingingProofRequest {
+function createBaseQueryGetDidBindingProofRequest(): QueryGetDidBindingProofRequest {
   return { accountId: "" };
 }
 
-export const QueryGetDidBingingProofRequest = {
-  encode(message: QueryGetDidBingingProofRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryGetDidBindingProofRequest = {
+  encode(message: QueryGetDidBindingProofRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.accountId !== "") {
       writer.uint32(10).string(message.accountId);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetDidBingingProofRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetDidBindingProofRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetDidBingingProofRequest();
+    const message = createBaseQueryGetDidBindingProofRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -267,46 +267,46 @@ export const QueryGetDidBingingProofRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetDidBingingProofRequest {
+  fromJSON(object: any): QueryGetDidBindingProofRequest {
     return { accountId: isSet(object.accountId) ? String(object.accountId) : "" };
   },
 
-  toJSON(message: QueryGetDidBingingProofRequest): unknown {
+  toJSON(message: QueryGetDidBindingProofRequest): unknown {
     const obj: any = {};
     message.accountId !== undefined && (obj.accountId = message.accountId);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGetDidBingingProofRequest>, I>>(
+  fromPartial<I extends Exact<DeepPartial<QueryGetDidBindingProofRequest>, I>>(
     object: I,
-  ): QueryGetDidBingingProofRequest {
-    const message = createBaseQueryGetDidBingingProofRequest();
+  ): QueryGetDidBindingProofRequest {
+    const message = createBaseQueryGetDidBindingProofRequest();
     message.accountId = object.accountId ?? "";
     return message;
   },
 };
 
-function createBaseQueryGetDidBingingProofResponse(): QueryGetDidBingingProofResponse {
-  return { DidBingingProof: undefined };
+function createBaseQueryGetDidBindingProofResponse(): QueryGetDidBindingProofResponse {
+  return { DidBindingProof: undefined };
 }
 
-export const QueryGetDidBingingProofResponse = {
-  encode(message: QueryGetDidBingingProofResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.DidBingingProof !== undefined) {
-      DidBingingProof.encode(message.DidBingingProof, writer.uint32(10).fork()).ldelim();
+export const QueryGetDidBindingProofResponse = {
+  encode(message: QueryGetDidBindingProofResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.DidBindingProof !== undefined) {
+      DidBindingProof.encode(message.DidBindingProof, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetDidBingingProofResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetDidBindingProofResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryGetDidBingingProofResponse();
+    const message = createBaseQueryGetDidBindingProofResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.DidBingingProof = DidBingingProof.decode(reader, reader.uint32());
+          message.DidBindingProof = DidBindingProof.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -316,46 +316,46 @@ export const QueryGetDidBingingProofResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetDidBingingProofResponse {
+  fromJSON(object: any): QueryGetDidBindingProofResponse {
     return {
-      DidBingingProof: isSet(object.DidBingingProof) ? DidBingingProof.fromJSON(object.DidBingingProof) : undefined,
+      DidBindingProof: isSet(object.DidBindingProof) ? DidBindingProof.fromJSON(object.DidBindingProof) : undefined,
     };
   },
 
-  toJSON(message: QueryGetDidBingingProofResponse): unknown {
+  toJSON(message: QueryGetDidBindingProofResponse): unknown {
     const obj: any = {};
-    message.DidBingingProof !== undefined
-      && (obj.DidBingingProof = message.DidBingingProof ? DidBingingProof.toJSON(message.DidBingingProof) : undefined);
+    message.DidBindingProof !== undefined
+      && (obj.DidBindingProof = message.DidBindingProof ? DidBindingProof.toJSON(message.DidBindingProof) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGetDidBingingProofResponse>, I>>(
+  fromPartial<I extends Exact<DeepPartial<QueryGetDidBindingProofResponse>, I>>(
     object: I,
-  ): QueryGetDidBingingProofResponse {
-    const message = createBaseQueryGetDidBingingProofResponse();
-    message.DidBingingProof = (object.DidBingingProof !== undefined && object.DidBingingProof !== null)
-      ? DidBingingProof.fromPartial(object.DidBingingProof)
+  ): QueryGetDidBindingProofResponse {
+    const message = createBaseQueryGetDidBindingProofResponse();
+    message.DidBindingProof = (object.DidBindingProof !== undefined && object.DidBindingProof !== null)
+      ? DidBindingProof.fromPartial(object.DidBindingProof)
       : undefined;
     return message;
   },
 };
 
-function createBaseQueryAllDidBingingProofRequest(): QueryAllDidBingingProofRequest {
+function createBaseQueryAllDidBindingProofRequest(): QueryAllDidBindingProofRequest {
   return { pagination: undefined };
 }
 
-export const QueryAllDidBingingProofRequest = {
-  encode(message: QueryAllDidBingingProofRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const QueryAllDidBindingProofRequest = {
+  encode(message: QueryAllDidBindingProofRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.pagination !== undefined) {
       PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllDidBingingProofRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllDidBindingProofRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllDidBingingProofRequest();
+    const message = createBaseQueryAllDidBindingProofRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -370,21 +370,21 @@ export const QueryAllDidBingingProofRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllDidBingingProofRequest {
+  fromJSON(object: any): QueryAllDidBindingProofRequest {
     return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
   },
 
-  toJSON(message: QueryAllDidBingingProofRequest): unknown {
+  toJSON(message: QueryAllDidBindingProofRequest): unknown {
     const obj: any = {};
     message.pagination !== undefined
       && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryAllDidBingingProofRequest>, I>>(
+  fromPartial<I extends Exact<DeepPartial<QueryAllDidBindingProofRequest>, I>>(
     object: I,
-  ): QueryAllDidBingingProofRequest {
-    const message = createBaseQueryAllDidBingingProofRequest();
+  ): QueryAllDidBindingProofRequest {
+    const message = createBaseQueryAllDidBindingProofRequest();
     message.pagination = (object.pagination !== undefined && object.pagination !== null)
       ? PageRequest.fromPartial(object.pagination)
       : undefined;
@@ -392,14 +392,14 @@ export const QueryAllDidBingingProofRequest = {
   },
 };
 
-function createBaseQueryAllDidBingingProofResponse(): QueryAllDidBingingProofResponse {
-  return { DidBingingProof: [], pagination: undefined };
+function createBaseQueryAllDidBindingProofResponse(): QueryAllDidBindingProofResponse {
+  return { DidBindingProof: [], pagination: undefined };
 }
 
-export const QueryAllDidBingingProofResponse = {
-  encode(message: QueryAllDidBingingProofResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.DidBingingProof) {
-      DidBingingProof.encode(v!, writer.uint32(10).fork()).ldelim();
+export const QueryAllDidBindingProofResponse = {
+  encode(message: QueryAllDidBindingProofResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.DidBindingProof) {
+      DidBindingProof.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
@@ -407,15 +407,15 @@ export const QueryAllDidBingingProofResponse = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllDidBingingProofResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllDidBindingProofResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseQueryAllDidBingingProofResponse();
+    const message = createBaseQueryAllDidBindingProofResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.DidBingingProof.push(DidBingingProof.decode(reader, reader.uint32()));
+          message.DidBindingProof.push(DidBindingProof.decode(reader, reader.uint32()));
           break;
         case 2:
           message.pagination = PageResponse.decode(reader, reader.uint32());
@@ -428,32 +428,32 @@ export const QueryAllDidBingingProofResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryAllDidBingingProofResponse {
+  fromJSON(object: any): QueryAllDidBindingProofResponse {
     return {
-      DidBingingProof: Array.isArray(object?.DidBingingProof)
-        ? object.DidBingingProof.map((e: any) => DidBingingProof.fromJSON(e))
+      DidBindingProof: Array.isArray(object?.DidBindingProof)
+        ? object.DidBindingProof.map((e: any) => DidBindingProof.fromJSON(e))
         : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
     };
   },
 
-  toJSON(message: QueryAllDidBingingProofResponse): unknown {
+  toJSON(message: QueryAllDidBindingProofResponse): unknown {
     const obj: any = {};
-    if (message.DidBingingProof) {
-      obj.DidBingingProof = message.DidBingingProof.map((e) => e ? DidBingingProof.toJSON(e) : undefined);
+    if (message.DidBindingProof) {
+      obj.DidBindingProof = message.DidBindingProof.map((e) => e ? DidBindingProof.toJSON(e) : undefined);
     } else {
-      obj.DidBingingProof = [];
+      obj.DidBindingProof = [];
     }
     message.pagination !== undefined
       && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryAllDidBingingProofResponse>, I>>(
+  fromPartial<I extends Exact<DeepPartial<QueryAllDidBindingProofResponse>, I>>(
     object: I,
-  ): QueryAllDidBingingProofResponse {
-    const message = createBaseQueryAllDidBingingProofResponse();
-    message.DidBingingProof = object.DidBingingProof?.map((e) => DidBingingProof.fromPartial(e)) || [];
+  ): QueryAllDidBindingProofResponse {
+    const message = createBaseQueryAllDidBindingProofResponse();
+    message.DidBindingProof = object.DidBindingProof?.map((e) => DidBindingProof.fromPartial(e)) || [];
     message.pagination = (object.pagination !== undefined && object.pagination !== null)
       ? PageResponse.fromPartial(object.pagination)
       : undefined;
@@ -1876,10 +1876,10 @@ export const QueryAllPaymentAddressResponse = {
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
-  /** Queries a DidBingingProof by index. */
-  DidBingingProof(request: QueryGetDidBingingProofRequest): Promise<QueryGetDidBingingProofResponse>;
-  /** Queries a list of DidBingingProof items. */
-  DidBingingProofAll(request: QueryAllDidBingingProofRequest): Promise<QueryAllDidBingingProofResponse>;
+  /** Queries a DidBindingProof by index. */
+  DidBindingProof(request: QueryGetDidBindingProofRequest): Promise<QueryGetDidBindingProofResponse>;
+  /** Queries a list of DidBindingProof items. */
+  DidBindingProofAll(request: QueryAllDidBindingProofRequest): Promise<QueryAllDidBindingProofResponse>;
   /** Queries a AccountList by index. */
   AccountList(request: QueryGetAccountListRequest): Promise<QueryGetAccountListResponse>;
   /** Queries a list of AccountList items. */
@@ -1913,8 +1913,8 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
-    this.DidBingingProof = this.DidBingingProof.bind(this);
-    this.DidBingingProofAll = this.DidBingingProofAll.bind(this);
+    this.DidBindingProof = this.DidBindingProof.bind(this);
+    this.DidBindingProofAll = this.DidBindingProofAll.bind(this);
     this.AccountList = this.AccountList.bind(this);
     this.AccountListAll = this.AccountListAll.bind(this);
     this.AccountAuth = this.AccountAuth.bind(this);
@@ -1935,16 +1935,16 @@ export class QueryClientImpl implements Query {
     return promise.then((data) => QueryParamsResponse.decode(new _m0.Reader(data)));
   }
 
-  DidBingingProof(request: QueryGetDidBingingProofRequest): Promise<QueryGetDidBingingProofResponse> {
-    const data = QueryGetDidBingingProofRequest.encode(request).finish();
-    const promise = this.rpc.request("saonetwork.sao.did.Query", "DidBingingProof", data);
-    return promise.then((data) => QueryGetDidBingingProofResponse.decode(new _m0.Reader(data)));
+  DidBindingProof(request: QueryGetDidBindingProofRequest): Promise<QueryGetDidBindingProofResponse> {
+    const data = QueryGetDidBindingProofRequest.encode(request).finish();
+    const promise = this.rpc.request("saonetwork.sao.did.Query", "DidBindingProof", data);
+    return promise.then((data) => QueryGetDidBindingProofResponse.decode(new _m0.Reader(data)));
   }
 
-  DidBingingProofAll(request: QueryAllDidBingingProofRequest): Promise<QueryAllDidBingingProofResponse> {
-    const data = QueryAllDidBingingProofRequest.encode(request).finish();
-    const promise = this.rpc.request("saonetwork.sao.did.Query", "DidBingingProofAll", data);
-    return promise.then((data) => QueryAllDidBingingProofResponse.decode(new _m0.Reader(data)));
+  DidBindingProofAll(request: QueryAllDidBindingProofRequest): Promise<QueryAllDidBindingProofResponse> {
+    const data = QueryAllDidBindingProofRequest.encode(request).finish();
+    const promise = this.rpc.request("saonetwork.sao.did.Query", "DidBindingProofAll", data);
+    return promise.then((data) => QueryAllDidBindingProofResponse.decode(new _m0.Reader(data)));
   }
 
   AccountList(request: QueryGetAccountListRequest): Promise<QueryGetAccountListResponse> {

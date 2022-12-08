@@ -1,7 +1,7 @@
 import { AccountAuth } from "./types/sao/did/account_auth"
 import { AccountList } from "./types/sao/did/account_list"
 import { BindingProof } from "./types/sao/did/binding_proof"
-import { DidBingingProof } from "./types/sao/did/did_binding_proof"
+import { DidBindingProof } from "./types/sao/did/did_binding_proof"
 import { Params } from "./types/sao/did/params"
 import { PastSeeds } from "./types/sao/did/past_seeds"
 import { PaymentAddress } from "./types/sao/did/payment_address"
@@ -14,7 +14,7 @@ export {
     AccountAuth,
     AccountList,
     BindingProof,
-    DidBingingProof,
+    DidBindingProof,
     Params,
     PastSeeds,
     PaymentAddress,
