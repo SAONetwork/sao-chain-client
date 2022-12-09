@@ -2,6 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
+import { ExpiredData } from "./expired_data";
 import { Metadata } from "./metadata";
 import { Model } from "./model";
 import { Params } from "./params";
@@ -57,6 +58,23 @@ export interface QueryAllModelRequest {
 
 export interface QueryAllModelResponse {
   model: Model[];
+  pagination: PageResponse | undefined;
+}
+
+export interface QueryGetExpiredDataRequest {
+  height: number;
+}
+
+export interface QueryGetExpiredDataResponse {
+  expiredData: ExpiredData | undefined;
+}
+
+export interface QueryAllExpiredDataRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryAllExpiredDataResponse {
+  expiredData: ExpiredData[];
   pagination: PageResponse | undefined;
 }
 
@@ -668,6 +686,220 @@ export const QueryAllModelResponse = {
   },
 };
 
+function createBaseQueryGetExpiredDataRequest(): QueryGetExpiredDataRequest {
+  return { height: 0 };
+}
+
+export const QueryGetExpiredDataRequest = {
+  encode(message: QueryGetExpiredDataRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.height !== 0) {
+      writer.uint32(8).uint64(message.height);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetExpiredDataRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetExpiredDataRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.height = longToNumber(reader.uint64() as Long);
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetExpiredDataRequest {
+    return { height: isSet(object.height) ? Number(object.height) : 0 };
+  },
+
+  toJSON(message: QueryGetExpiredDataRequest): unknown {
+    const obj: any = {};
+    message.height !== undefined && (obj.height = Math.round(message.height));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetExpiredDataRequest>, I>>(object: I): QueryGetExpiredDataRequest {
+    const message = createBaseQueryGetExpiredDataRequest();
+    message.height = object.height ?? 0;
+    return message;
+  },
+};
+
+function createBaseQueryGetExpiredDataResponse(): QueryGetExpiredDataResponse {
+  return { expiredData: undefined };
+}
+
+export const QueryGetExpiredDataResponse = {
+  encode(message: QueryGetExpiredDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.expiredData !== undefined) {
+      ExpiredData.encode(message.expiredData, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGetExpiredDataResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGetExpiredDataResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.expiredData = ExpiredData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetExpiredDataResponse {
+    return { expiredData: isSet(object.expiredData) ? ExpiredData.fromJSON(object.expiredData) : undefined };
+  },
+
+  toJSON(message: QueryGetExpiredDataResponse): unknown {
+    const obj: any = {};
+    message.expiredData !== undefined
+      && (obj.expiredData = message.expiredData ? ExpiredData.toJSON(message.expiredData) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGetExpiredDataResponse>, I>>(object: I): QueryGetExpiredDataResponse {
+    const message = createBaseQueryGetExpiredDataResponse();
+    message.expiredData = (object.expiredData !== undefined && object.expiredData !== null)
+      ? ExpiredData.fromPartial(object.expiredData)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllExpiredDataRequest(): QueryAllExpiredDataRequest {
+  return { pagination: undefined };
+}
+
+export const QueryAllExpiredDataRequest = {
+  encode(message: QueryAllExpiredDataRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllExpiredDataRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllExpiredDataRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllExpiredDataRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryAllExpiredDataRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllExpiredDataRequest>, I>>(object: I): QueryAllExpiredDataRequest {
+    const message = createBaseQueryAllExpiredDataRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryAllExpiredDataResponse(): QueryAllExpiredDataResponse {
+  return { expiredData: [], pagination: undefined };
+}
+
+export const QueryAllExpiredDataResponse = {
+  encode(message: QueryAllExpiredDataResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.expiredData) {
+      ExpiredData.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryAllExpiredDataResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryAllExpiredDataResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.expiredData.push(ExpiredData.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryAllExpiredDataResponse {
+    return {
+      expiredData: Array.isArray(object?.expiredData)
+        ? object.expiredData.map((e: any) => ExpiredData.fromJSON(e))
+        : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryAllExpiredDataResponse): unknown {
+    const obj: any = {};
+    if (message.expiredData) {
+      obj.expiredData = message.expiredData.map((e) => e ? ExpiredData.toJSON(e) : undefined);
+    } else {
+      obj.expiredData = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryAllExpiredDataResponse>, I>>(object: I): QueryAllExpiredDataResponse {
+    const message = createBaseQueryAllExpiredDataResponse();
+    message.expiredData = object.expiredData?.map((e) => ExpiredData.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
@@ -680,6 +912,10 @@ export interface Query {
   Model(request: QueryGetModelRequest): Promise<QueryGetModelResponse>;
   /** Queries a list of Model items. */
   ModelAll(request: QueryAllModelRequest): Promise<QueryAllModelResponse>;
+  /** Queries a ExpiredData by index. */
+  ExpiredData(request: QueryGetExpiredDataRequest): Promise<QueryGetExpiredDataResponse>;
+  /** Queries a list of ExpiredData items. */
+  ExpiredDataAll(request: QueryAllExpiredDataRequest): Promise<QueryAllExpiredDataResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -691,6 +927,8 @@ export class QueryClientImpl implements Query {
     this.MetadataAll = this.MetadataAll.bind(this);
     this.Model = this.Model.bind(this);
     this.ModelAll = this.ModelAll.bind(this);
+    this.ExpiredData = this.ExpiredData.bind(this);
+    this.ExpiredDataAll = this.ExpiredDataAll.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -720,6 +958,18 @@ export class QueryClientImpl implements Query {
     const data = QueryAllModelRequest.encode(request).finish();
     const promise = this.rpc.request("saonetwork.sao.model.Query", "ModelAll", data);
     return promise.then((data) => QueryAllModelResponse.decode(new _m0.Reader(data)));
+  }
+
+  ExpiredData(request: QueryGetExpiredDataRequest): Promise<QueryGetExpiredDataResponse> {
+    const data = QueryGetExpiredDataRequest.encode(request).finish();
+    const promise = this.rpc.request("saonetwork.sao.model.Query", "ExpiredData", data);
+    return promise.then((data) => QueryGetExpiredDataResponse.decode(new _m0.Reader(data)));
+  }
+
+  ExpiredDataAll(request: QueryAllExpiredDataRequest): Promise<QueryAllExpiredDataResponse> {
+    const data = QueryAllExpiredDataRequest.encode(request).finish();
+    const promise = this.rpc.request("saonetwork.sao.model.Query", "ExpiredDataAll", data);
+    return promise.then((data) => QueryAllExpiredDataResponse.decode(new _m0.Reader(data)));
   }
 }
 

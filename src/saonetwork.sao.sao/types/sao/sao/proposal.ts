@@ -59,7 +59,7 @@ export const Proposal = {
       writer.uint32(26).string(message.groupId);
     }
     if (message.duration !== 0) {
-      writer.uint32(32).int32(message.duration);
+      writer.uint32(32).uint64(message.duration);
     }
     if (message.replica !== 0) {
       writer.uint32(40).int32(message.replica);
@@ -120,7 +120,7 @@ export const Proposal = {
           message.groupId = reader.string();
           break;
         case 4:
-          message.duration = reader.int32();
+          message.duration = longToNumber(reader.uint64() as Long);
           break;
         case 5:
           message.replica = reader.int32();

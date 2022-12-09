@@ -1,34 +1,54 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
-import { Coin } from "../../cosmos/base/v1beta1/coin";
+import { Coin, DecCoin } from "../../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "saonetwork.sao.node";
 
 export interface Pool {
-  denom: Coin | undefined;
-  coinPerShare: string;
-  lastRewardBlock: number;
+  totalPledged: Coin | undefined;
   totalReward: Coin | undefined;
+  accPledgePerByte: DecCoin | undefined;
+  accRewardPerByte: DecCoin | undefined;
+  rewardPerBlock: DecCoin | undefined;
+  totalStorage: number;
+  lastRewardBlock: number;
 }
 
 function createBasePool(): Pool {
-  return { denom: undefined, coinPerShare: "", lastRewardBlock: 0, totalReward: undefined };
+  return {
+    totalPledged: undefined,
+    totalReward: undefined,
+    accPledgePerByte: undefined,
+    accRewardPerByte: undefined,
+    rewardPerBlock: undefined,
+    totalStorage: 0,
+    lastRewardBlock: 0,
+  };
 }
 
 export const Pool = {
   encode(message: Pool, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.denom !== undefined) {
-      Coin.encode(message.denom, writer.uint32(10).fork()).ldelim();
-    }
-    if (message.coinPerShare !== "") {
-      writer.uint32(18).string(message.coinPerShare);
-    }
-    if (message.lastRewardBlock !== 0) {
-      writer.uint32(24).int64(message.lastRewardBlock);
+    if (message.totalPledged !== undefined) {
+      Coin.encode(message.totalPledged, writer.uint32(10).fork()).ldelim();
     }
     if (message.totalReward !== undefined) {
-      Coin.encode(message.totalReward, writer.uint32(34).fork()).ldelim();
+      Coin.encode(message.totalReward, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.accPledgePerByte !== undefined) {
+      DecCoin.encode(message.accPledgePerByte, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.accRewardPerByte !== undefined) {
+      DecCoin.encode(message.accRewardPerByte, writer.uint32(34).fork()).ldelim();
+    }
+    if (message.rewardPerBlock !== undefined) {
+      DecCoin.encode(message.rewardPerBlock, writer.uint32(42).fork()).ldelim();
+    }
+    if (message.totalStorage !== 0) {
+      writer.uint32(48).int64(message.totalStorage);
+    }
+    if (message.lastRewardBlock !== 0) {
+      writer.uint32(56).int64(message.lastRewardBlock);
     }
     return writer;
   },
@@ -41,16 +61,25 @@ export const Pool = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.denom = Coin.decode(reader, reader.uint32());
+          message.totalPledged = Coin.decode(reader, reader.uint32());
           break;
         case 2:
-          message.coinPerShare = reader.string();
+          message.totalReward = Coin.decode(reader, reader.uint32());
           break;
         case 3:
-          message.lastRewardBlock = longToNumber(reader.int64() as Long);
+          message.accPledgePerByte = DecCoin.decode(reader, reader.uint32());
           break;
         case 4:
-          message.totalReward = Coin.decode(reader, reader.uint32());
+          message.accRewardPerByte = DecCoin.decode(reader, reader.uint32());
+          break;
+        case 5:
+          message.rewardPerBlock = DecCoin.decode(reader, reader.uint32());
+          break;
+        case 6:
+          message.totalStorage = longToNumber(reader.int64() as Long);
+          break;
+        case 7:
+          message.lastRewardBlock = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -62,31 +91,52 @@ export const Pool = {
 
   fromJSON(object: any): Pool {
     return {
-      denom: isSet(object.denom) ? Coin.fromJSON(object.denom) : undefined,
-      coinPerShare: isSet(object.coinPerShare) ? String(object.coinPerShare) : "",
-      lastRewardBlock: isSet(object.lastRewardBlock) ? Number(object.lastRewardBlock) : 0,
+      totalPledged: isSet(object.totalPledged) ? Coin.fromJSON(object.totalPledged) : undefined,
       totalReward: isSet(object.totalReward) ? Coin.fromJSON(object.totalReward) : undefined,
+      accPledgePerByte: isSet(object.accPledgePerByte) ? DecCoin.fromJSON(object.accPledgePerByte) : undefined,
+      accRewardPerByte: isSet(object.accRewardPerByte) ? DecCoin.fromJSON(object.accRewardPerByte) : undefined,
+      rewardPerBlock: isSet(object.rewardPerBlock) ? DecCoin.fromJSON(object.rewardPerBlock) : undefined,
+      totalStorage: isSet(object.totalStorage) ? Number(object.totalStorage) : 0,
+      lastRewardBlock: isSet(object.lastRewardBlock) ? Number(object.lastRewardBlock) : 0,
     };
   },
 
   toJSON(message: Pool): unknown {
     const obj: any = {};
-    message.denom !== undefined && (obj.denom = message.denom ? Coin.toJSON(message.denom) : undefined);
-    message.coinPerShare !== undefined && (obj.coinPerShare = message.coinPerShare);
-    message.lastRewardBlock !== undefined && (obj.lastRewardBlock = Math.round(message.lastRewardBlock));
+    message.totalPledged !== undefined
+      && (obj.totalPledged = message.totalPledged ? Coin.toJSON(message.totalPledged) : undefined);
     message.totalReward !== undefined
       && (obj.totalReward = message.totalReward ? Coin.toJSON(message.totalReward) : undefined);
+    message.accPledgePerByte !== undefined
+      && (obj.accPledgePerByte = message.accPledgePerByte ? DecCoin.toJSON(message.accPledgePerByte) : undefined);
+    message.accRewardPerByte !== undefined
+      && (obj.accRewardPerByte = message.accRewardPerByte ? DecCoin.toJSON(message.accRewardPerByte) : undefined);
+    message.rewardPerBlock !== undefined
+      && (obj.rewardPerBlock = message.rewardPerBlock ? DecCoin.toJSON(message.rewardPerBlock) : undefined);
+    message.totalStorage !== undefined && (obj.totalStorage = Math.round(message.totalStorage));
+    message.lastRewardBlock !== undefined && (obj.lastRewardBlock = Math.round(message.lastRewardBlock));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Pool>, I>>(object: I): Pool {
     const message = createBasePool();
-    message.denom = (object.denom !== undefined && object.denom !== null) ? Coin.fromPartial(object.denom) : undefined;
-    message.coinPerShare = object.coinPerShare ?? "";
-    message.lastRewardBlock = object.lastRewardBlock ?? 0;
+    message.totalPledged = (object.totalPledged !== undefined && object.totalPledged !== null)
+      ? Coin.fromPartial(object.totalPledged)
+      : undefined;
     message.totalReward = (object.totalReward !== undefined && object.totalReward !== null)
       ? Coin.fromPartial(object.totalReward)
       : undefined;
+    message.accPledgePerByte = (object.accPledgePerByte !== undefined && object.accPledgePerByte !== null)
+      ? DecCoin.fromPartial(object.accPledgePerByte)
+      : undefined;
+    message.accRewardPerByte = (object.accRewardPerByte !== undefined && object.accRewardPerByte !== null)
+      ? DecCoin.fromPartial(object.accRewardPerByte)
+      : undefined;
+    message.rewardPerBlock = (object.rewardPerBlock !== undefined && object.rewardPerBlock !== null)
+      ? DecCoin.fromPartial(object.rewardPerBlock)
+      : undefined;
+    message.totalStorage = object.totalStorage ?? 0;
+    message.lastRewardBlock = object.lastRewardBlock ?? 0;
     return message;
   },
 };

@@ -35,9 +35,13 @@ export interface NodeNode {
  * Params defines the parameters for the module.
  */
 export interface NodeParams {
-  /** @format uint64 */
-  block_reward?: string;
-  earn_denom?: string;
+  /**
+   * Coin defines a token with a denomination and an amount.
+   *
+   * NOTE: The amount field is an Int which implements the custom method
+   * signatures required by gogoproto.
+   */
+  block_reward?: V1Beta1Coin;
 }
 
 export interface NodePledge {
@@ -49,7 +53,7 @@ export interface NodePledge {
    * NOTE: The amount field is an Int which implements the custom method
    * signatures required by gogoproto.
    */
-  pledged?: V1Beta1Coin;
+  total_order_pledged?: V1Beta1Coin;
 
   /**
    * Coin defines a token with a denomination and an amount.
@@ -57,15 +61,29 @@ export interface NodePledge {
    * NOTE: The amount field is an Int which implements the custom method
    * signatures required by gogoproto.
    */
-  reward?: V1Beta1Coin;
+  total_storage_pledged?: V1Beta1Coin;
 
   /**
-   * Coin defines a token with a denomination and an amount.
+   * DecCoin defines a token with a denomination and a decimal amount.
    *
-   * NOTE: The amount field is an Int which implements the custom method
+   * NOTE: The amount field is an Dec which implements the custom method
    * signatures required by gogoproto.
    */
-  rewardDebt?: V1Beta1Coin;
+  reward?: V1Beta1DecCoin;
+
+  /**
+   * DecCoin defines a token with a denomination and a decimal amount.
+   *
+   * NOTE: The amount field is an Dec which implements the custom method
+   * signatures required by gogoproto.
+   */
+  reward_debt?: V1Beta1DecCoin;
+
+  /** @format int64 */
+  total_storage?: string;
+
+  /** @format int64 */
+  last_reward_at?: string;
 }
 
 export interface NodePool {
@@ -75,11 +93,7 @@ export interface NodePool {
    * NOTE: The amount field is an Int which implements the custom method
    * signatures required by gogoproto.
    */
-  denom?: V1Beta1Coin;
-  coinPerShare?: string;
-
-  /** @format int64 */
-  lastRewardBlock?: string;
+  total_pledged?: V1Beta1Coin;
 
   /**
    * Coin defines a token with a denomination and an amount.
@@ -88,6 +102,36 @@ export interface NodePool {
    * signatures required by gogoproto.
    */
   total_reward?: V1Beta1Coin;
+
+  /**
+   * DecCoin defines a token with a denomination and a decimal amount.
+   *
+   * NOTE: The amount field is an Dec which implements the custom method
+   * signatures required by gogoproto.
+   */
+  acc_pledge_per_byte?: V1Beta1DecCoin;
+
+  /**
+   * DecCoin defines a token with a denomination and a decimal amount.
+   *
+   * NOTE: The amount field is an Dec which implements the custom method
+   * signatures required by gogoproto.
+   */
+  acc_reward_per_byte?: V1Beta1DecCoin;
+
+  /**
+   * DecCoin defines a token with a denomination and a decimal amount.
+   *
+   * NOTE: The amount field is an Dec which implements the custom method
+   * signatures required by gogoproto.
+   */
+  reward_per_block?: V1Beta1DecCoin;
+
+  /** @format int64 */
+  total_storage?: string;
+
+  /** @format int64 */
+  last_reward_block?: string;
 }
 
 export interface NodeQueryAllNodeResponse {
@@ -158,6 +202,17 @@ NOTE: The amount field is an Int which implements the custom method
 signatures required by gogoproto.
 */
 export interface V1Beta1Coin {
+  denom?: string;
+  amount?: string;
+}
+
+/**
+* DecCoin defines a token with a denomination and a decimal amount.
+
+NOTE: The amount field is an Dec which implements the custom method
+signatures required by gogoproto.
+*/
+export interface V1Beta1DecCoin {
   denom?: string;
   amount?: string;
 }

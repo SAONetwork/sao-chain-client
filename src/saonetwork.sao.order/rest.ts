@@ -41,8 +41,8 @@ export interface OrderOrder {
   provider?: string;
   cid?: string;
 
-  /** @format int32 */
-  duration?: number;
+  /** @format uint64 */
+  duration?: string;
 
   /** @format int32 */
   expire?: number;
@@ -66,8 +66,11 @@ export interface OrderOrder {
   /** @format uint64 */
   size?: string;
 
-  /** @format int32 */
+  /** @format int64 */
   operation?: number;
+
+  /** @format int32 */
+  created_at?: number;
 }
 
 /**
@@ -142,28 +145,6 @@ export interface OrderShard {
    * signatures required by gogoproto.
    */
   pledge?: V1Beta1Coin;
-
-  /** @format uint64 */
-  duration?: string;
-
-  /** @format uint64 */
-  createdAt?: string;
-
-  /**
-   * Coin defines a token with a denomination and an amount.
-   *
-   * NOTE: The amount field is an Int which implements the custom method
-   * signatures required by gogoproto.
-   */
-  amount?: V1Beta1Coin;
-
-  /**
-   * Coin defines a token with a denomination and an amount.
-   *
-   * NOTE: The amount field is an Int which implements the custom method
-   * signatures required by gogoproto.
-   */
-  paid?: V1Beta1Coin;
 }
 
 export interface ProtobufAny {

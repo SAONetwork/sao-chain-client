@@ -1,26 +1,22 @@
 /* eslint-disable */
-import Long from "long";
 import _m0 from "protobufjs/minimal";
+import { Coin } from "../../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "saonetwork.sao.node";
 
 /** Params defines the parameters for the module. */
 export interface Params {
-  blockReward: number;
-  earnDenom: string;
+  blockReward: Coin | undefined;
 }
 
 function createBaseParams(): Params {
-  return { blockReward: 0, earnDenom: "" };
+  return { blockReward: undefined };
 }
 
 export const Params = {
   encode(message: Params, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.blockReward !== 0) {
-      writer.uint32(8).uint64(message.blockReward);
-    }
-    if (message.earnDenom !== "") {
-      writer.uint32(18).string(message.earnDenom);
+    if (message.blockReward !== undefined) {
+      Coin.encode(message.blockReward, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -33,10 +29,7 @@ export const Params = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.blockReward = longToNumber(reader.uint64() as Long);
-          break;
-        case 2:
-          message.earnDenom = reader.string();
+          message.blockReward = Coin.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -47,45 +40,24 @@ export const Params = {
   },
 
   fromJSON(object: any): Params {
-    return {
-      blockReward: isSet(object.blockReward) ? Number(object.blockReward) : 0,
-      earnDenom: isSet(object.earnDenom) ? String(object.earnDenom) : "",
-    };
+    return { blockReward: isSet(object.blockReward) ? Coin.fromJSON(object.blockReward) : undefined };
   },
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    message.blockReward !== undefined && (obj.blockReward = Math.round(message.blockReward));
-    message.earnDenom !== undefined && (obj.earnDenom = message.earnDenom);
+    message.blockReward !== undefined
+      && (obj.blockReward = message.blockReward ? Coin.toJSON(message.blockReward) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Params>, I>>(object: I): Params {
     const message = createBaseParams();
-    message.blockReward = object.blockReward ?? 0;
-    message.earnDenom = object.earnDenom ?? "";
+    message.blockReward = (object.blockReward !== undefined && object.blockReward !== null)
+      ? Coin.fromPartial(object.blockReward)
+      : undefined;
     return message;
   },
 };
-
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") {
-    return globalThis;
-  }
-  if (typeof self !== "undefined") {
-    return self;
-  }
-  if (typeof window !== "undefined") {
-    return window;
-  }
-  if (typeof global !== "undefined") {
-    return global;
-  }
-  throw "Unable to locate global object";
-})();
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -97,18 +69,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
-
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

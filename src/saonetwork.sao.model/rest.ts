@@ -9,6 +9,12 @@
  * ---------------------------------------------------------------
  */
 
+export interface ModelExpiredData {
+  /** @format uint64 */
+  height?: string;
+  data?: string[];
+}
+
 export interface ModelMetadata {
   dataId?: string;
   owner?: string;
@@ -46,6 +52,21 @@ export type ModelMsgClaimResponse = object;
  */
 export type ModelParams = object;
 
+export interface ModelQueryAllExpiredDataResponse {
+  expiredData?: ModelExpiredData[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface ModelQueryAllMetadataResponse {
   metadata?: ModelMetadata[];
 
@@ -74,6 +95,10 @@ export interface ModelQueryAllModelResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface ModelQueryGetExpiredDataResponse {
+  expiredData?: ModelExpiredData;
 }
 
 export interface ModelQueryGetMetadataResponse {
@@ -307,10 +332,52 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title sao/model/genesis.proto
+ * @title sao/model/expired_data.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryExpiredDataAll
+   * @summary Queries a list of ExpiredData items.
+   * @request GET:/SaoNetwork/sao/model/expired_data
+   */
+  queryExpiredDataAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<ModelQueryAllExpiredDataResponse, RpcStatus>({
+      path: `/SaoNetwork/sao/model/expired_data`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryExpiredData
+   * @summary Queries a ExpiredData by index.
+   * @request GET:/SaoNetwork/sao/model/expired_data/{height}
+   */
+  queryExpiredData = (height: string, params: RequestParams = {}) =>
+    this.request<ModelQueryGetExpiredDataResponse, RpcStatus>({
+      path: `/SaoNetwork/sao/model/expired_data/${height}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

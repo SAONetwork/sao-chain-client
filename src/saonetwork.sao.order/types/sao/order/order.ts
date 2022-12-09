@@ -22,6 +22,7 @@ export interface Order {
   amount: Coin | undefined;
   size: number;
   operation: number;
+  createdAt: number;
 }
 
 export interface Order_ShardsEntry {
@@ -45,6 +46,7 @@ function createBaseOrder(): Order {
     amount: undefined,
     size: 0,
     operation: 0,
+    createdAt: 0,
   };
 }
 
@@ -66,7 +68,7 @@ export const Order = {
       writer.uint32(42).string(message.cid);
     }
     if (message.duration !== 0) {
-      writer.uint32(48).int32(message.duration);
+      writer.uint32(48).uint64(message.duration);
     }
     if (message.expire !== 0) {
       writer.uint32(56).int32(message.expire);
@@ -90,7 +92,10 @@ export const Order = {
       writer.uint32(104).uint64(message.size);
     }
     if (message.operation !== 0) {
-      writer.uint32(112).int32(message.operation);
+      writer.uint32(112).uint32(message.operation);
+    }
+    if (message.createdAt !== 0) {
+      writer.uint32(120).int32(message.createdAt);
     }
     return writer;
   },
@@ -118,7 +123,7 @@ export const Order = {
           message.cid = reader.string();
           break;
         case 6:
-          message.duration = reader.int32();
+          message.duration = longToNumber(reader.uint64() as Long);
           break;
         case 7:
           message.expire = reader.int32();
@@ -145,7 +150,10 @@ export const Order = {
           message.size = longToNumber(reader.uint64() as Long);
           break;
         case 14:
-          message.operation = reader.int32();
+          message.operation = reader.uint32();
+          break;
+        case 15:
+          message.createdAt = reader.int32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -176,6 +184,7 @@ export const Order = {
       amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
       size: isSet(object.size) ? Number(object.size) : 0,
       operation: isSet(object.operation) ? Number(object.operation) : 0,
+      createdAt: isSet(object.createdAt) ? Number(object.createdAt) : 0,
     };
   },
 
@@ -200,6 +209,7 @@ export const Order = {
     message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
     message.size !== undefined && (obj.size = Math.round(message.size));
     message.operation !== undefined && (obj.operation = Math.round(message.operation));
+    message.createdAt !== undefined && (obj.createdAt = Math.round(message.createdAt));
     return obj;
   },
 
@@ -228,6 +238,7 @@ export const Order = {
       : undefined;
     message.size = object.size ?? 0;
     message.operation = object.operation ?? 0;
+    message.createdAt = object.createdAt ?? 0;
     return message;
   },
 };

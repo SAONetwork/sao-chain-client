@@ -1,5 +1,6 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { ExpiredData } from "./expired_data";
 import { Metadata } from "./metadata";
 import { Model } from "./model";
 import { Params } from "./params";
@@ -10,12 +11,13 @@ export const protobufPackage = "saonetwork.sao.model";
 export interface GenesisState {
   params: Params | undefined;
   metadataList: Metadata[];
-  /** this line is used by starport scaffolding # genesis/proto/state */
   modelList: Model[];
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  expiredDataList: ExpiredData[];
 }
 
 function createBaseGenesisState(): GenesisState {
-  return { params: undefined, metadataList: [], modelList: [] };
+  return { params: undefined, metadataList: [], modelList: [], expiredDataList: [] };
 }
 
 export const GenesisState = {
@@ -28,6 +30,9 @@ export const GenesisState = {
     }
     for (const v of message.modelList) {
       Model.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    for (const v of message.expiredDataList) {
+      ExpiredData.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -48,6 +53,9 @@ export const GenesisState = {
         case 3:
           message.modelList.push(Model.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.expiredDataList.push(ExpiredData.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -63,6 +71,9 @@ export const GenesisState = {
         ? object.metadataList.map((e: any) => Metadata.fromJSON(e))
         : [],
       modelList: Array.isArray(object?.modelList) ? object.modelList.map((e: any) => Model.fromJSON(e)) : [],
+      expiredDataList: Array.isArray(object?.expiredDataList)
+        ? object.expiredDataList.map((e: any) => ExpiredData.fromJSON(e))
+        : [],
     };
   },
 
@@ -79,6 +90,11 @@ export const GenesisState = {
     } else {
       obj.modelList = [];
     }
+    if (message.expiredDataList) {
+      obj.expiredDataList = message.expiredDataList.map((e) => e ? ExpiredData.toJSON(e) : undefined);
+    } else {
+      obj.expiredDataList = [];
+    }
     return obj;
   },
 
@@ -89,6 +105,7 @@ export const GenesisState = {
       : undefined;
     message.metadataList = object.metadataList?.map((e) => Metadata.fromPartial(e)) || [];
     message.modelList = object.modelList?.map((e) => Model.fromPartial(e)) || [];
+    message.expiredDataList = object.expiredDataList?.map((e) => ExpiredData.fromPartial(e)) || [];
     return message;
   },
 };

@@ -25,6 +25,53 @@ export interface SaoJwsSignature {
   signature?: string;
 }
 
+export interface SaoMetadata {
+  dataId?: string;
+  owner?: string;
+  alias?: string;
+  groupId?: string;
+
+  /** @format uint64 */
+  orderId?: string;
+  tags?: string[];
+  cid?: string;
+  commits?: string[];
+  extendInfo?: string;
+  update?: boolean;
+  commit?: string;
+  rule?: string;
+
+  /** @format uint64 */
+  duration?: string;
+
+  /** @format uint64 */
+  createdAt?: string;
+  provider?: string;
+
+  /** @format int32 */
+  expire?: number;
+
+  /** @format int32 */
+  status?: number;
+
+  /** @format int32 */
+  replica?: number;
+
+  /**
+   * Coin defines a token with a denomination and an amount.
+   *
+   * NOTE: The amount field is an Int which implements the custom method
+   * signatures required by gogoproto.
+   */
+  amount?: V1Beta1Coin;
+
+  /** @format uint64 */
+  size?: string;
+
+  /** @format int64 */
+  operation?: number;
+}
+
 export type SaoMsgCancelResponse = object;
 
 export type SaoMsgCompleteResponse = object;
@@ -63,8 +110,8 @@ export interface SaoProposal {
   provider?: string;
   groupId?: string;
 
-  /** @format int32 */
-  duration?: number;
+  /** @format uint64 */
+  duration?: string;
 
   /** @format int32 */
   replica?: number;
@@ -91,6 +138,11 @@ export interface SaoProposal {
   readwriteDids?: string[];
 }
 
+export interface SaoQueryMetadataResponse {
+  metadata?: SaoMetadata;
+  shards?: Record<string, SaoShardMeta>;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
@@ -99,15 +151,52 @@ export interface SaoQueryParamsResponse {
   params?: SaoParams;
 }
 
+export interface SaoQueryProposal {
+  owner?: string;
+  keyword?: string;
+  groupId?: string;
+
+  /**
+   * 0,1 - query by dataId, 2 - query by alias
+   * @format int64
+   */
+  type_?: number;
+
+  /** @format uint64 */
+  lastValidHeight?: string;
+  gateway?: string;
+  commitId?: string;
+  version?: string;
+}
+
 export interface SaoRenewProposal {
   owner?: string;
 
-  /** @format int32 */
-  duration?: number;
+  /** @format uint64 */
+  duration?: string;
 
   /** @format int32 */
   timeout?: number;
   data?: string[];
+}
+
+export interface SaoShardMeta {
+  /** @format uint64 */
+  shardId?: string;
+  peer?: string;
+  cid?: string;
+  provider?: string;
+}
+
+/**
+* Coin defines a token with a denomination and an amount.
+
+NOTE: The amount field is an Int which implements the custom method
+signatures required by gogoproto.
+*/
+export interface V1Beta1Coin {
+  denom?: string;
+  amount?: string;
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
@@ -235,6 +324,37 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryMetadata
+   * @summary Queries a list of Metadata items.
+   * @request GET:/SaoNetwork/sao/sao/metadata
+   */
+  queryMetadata = (
+    query?: {
+      "proposal.owner"?: string;
+      "proposal.keyword"?: string;
+      "proposal.groupId"?: string;
+      "proposal.type_"?: number;
+      "proposal.lastValidHeight"?: string;
+      "proposal.gateway"?: string;
+      "proposal.commitId"?: string;
+      "proposal.version"?: string;
+      "jws_signature.protected"?: string;
+      "jws_signature.signature"?: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<SaoQueryMetadataResponse, RpcStatus>({
+      path: `/SaoNetwork/sao/sao/metadata`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

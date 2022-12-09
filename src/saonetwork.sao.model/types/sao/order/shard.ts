@@ -12,25 +12,10 @@ export interface Shard {
   size: number;
   cid: string;
   pledge: Coin | undefined;
-  duration: number;
-  createdAt: number;
-  amount: Coin | undefined;
-  paid: Coin | undefined;
 }
 
 function createBaseShard(): Shard {
-  return {
-    id: 0,
-    orderId: 0,
-    status: 0,
-    size: 0,
-    cid: "",
-    pledge: undefined,
-    duration: 0,
-    createdAt: 0,
-    amount: undefined,
-    paid: undefined,
-  };
+  return { id: 0, orderId: 0, status: 0, size: 0, cid: "", pledge: undefined };
 }
 
 export const Shard = {
@@ -52,18 +37,6 @@ export const Shard = {
     }
     if (message.pledge !== undefined) {
       Coin.encode(message.pledge, writer.uint32(50).fork()).ldelim();
-    }
-    if (message.duration !== 0) {
-      writer.uint32(56).uint64(message.duration);
-    }
-    if (message.createdAt !== 0) {
-      writer.uint32(64).uint64(message.createdAt);
-    }
-    if (message.amount !== undefined) {
-      Coin.encode(message.amount, writer.uint32(74).fork()).ldelim();
-    }
-    if (message.paid !== undefined) {
-      Coin.encode(message.paid, writer.uint32(82).fork()).ldelim();
     }
     return writer;
   },
@@ -93,18 +66,6 @@ export const Shard = {
         case 6:
           message.pledge = Coin.decode(reader, reader.uint32());
           break;
-        case 7:
-          message.duration = longToNumber(reader.uint64() as Long);
-          break;
-        case 8:
-          message.createdAt = longToNumber(reader.uint64() as Long);
-          break;
-        case 9:
-          message.amount = Coin.decode(reader, reader.uint32());
-          break;
-        case 10:
-          message.paid = Coin.decode(reader, reader.uint32());
-          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -121,10 +82,6 @@ export const Shard = {
       size: isSet(object.size) ? Number(object.size) : 0,
       cid: isSet(object.cid) ? String(object.cid) : "",
       pledge: isSet(object.pledge) ? Coin.fromJSON(object.pledge) : undefined,
-      duration: isSet(object.duration) ? Number(object.duration) : 0,
-      createdAt: isSet(object.createdAt) ? Number(object.createdAt) : 0,
-      amount: isSet(object.amount) ? Coin.fromJSON(object.amount) : undefined,
-      paid: isSet(object.paid) ? Coin.fromJSON(object.paid) : undefined,
     };
   },
 
@@ -136,10 +93,6 @@ export const Shard = {
     message.size !== undefined && (obj.size = Math.round(message.size));
     message.cid !== undefined && (obj.cid = message.cid);
     message.pledge !== undefined && (obj.pledge = message.pledge ? Coin.toJSON(message.pledge) : undefined);
-    message.duration !== undefined && (obj.duration = Math.round(message.duration));
-    message.createdAt !== undefined && (obj.createdAt = Math.round(message.createdAt));
-    message.amount !== undefined && (obj.amount = message.amount ? Coin.toJSON(message.amount) : undefined);
-    message.paid !== undefined && (obj.paid = message.paid ? Coin.toJSON(message.paid) : undefined);
     return obj;
   },
 
@@ -153,12 +106,6 @@ export const Shard = {
     message.pledge = (object.pledge !== undefined && object.pledge !== null)
       ? Coin.fromPartial(object.pledge)
       : undefined;
-    message.duration = object.duration ?? 0;
-    message.createdAt = object.createdAt ?? 0;
-    message.amount = (object.amount !== undefined && object.amount !== null)
-      ? Coin.fromPartial(object.amount)
-      : undefined;
-    message.paid = (object.paid !== undefined && object.paid !== null) ? Coin.fromPartial(object.paid) : undefined;
     return message;
   },
 };
