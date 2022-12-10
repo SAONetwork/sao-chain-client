@@ -9,7 +9,7 @@ export interface QueryProposal {
   keyword: string;
   groupId: string;
   /** 0,1 - query by dataId, 2 - query by alias */
-  type: number;
+  type_: number;
   lastValidHeight: number;
   gateway: string;
   commitId: string;
@@ -17,7 +17,7 @@ export interface QueryProposal {
 }
 
 function createBaseQueryProposal(): QueryProposal {
-  return { owner: "", keyword: "", groupId: "", type: 0, lastValidHeight: 0, gateway: "", commitId: "", version: "" };
+  return { owner: "", keyword: "", groupId: "", type_: 0, lastValidHeight: 0, gateway: "", commitId: "", version: "" };
 }
 
 export const QueryProposal = {
@@ -31,8 +31,8 @@ export const QueryProposal = {
     if (message.groupId !== "") {
       writer.uint32(26).string(message.groupId);
     }
-    if (message.type !== 0) {
-      writer.uint32(32).uint32(message.type);
+    if (message.type_ !== 0) {
+      writer.uint32(32).uint32(message.type_);
     }
     if (message.lastValidHeight !== 0) {
       writer.uint32(40).uint64(message.lastValidHeight);
@@ -66,7 +66,7 @@ export const QueryProposal = {
           message.groupId = reader.string();
           break;
         case 4:
-          message.type = reader.uint32();
+          message.type_ = reader.uint32();
           break;
         case 5:
           message.lastValidHeight = longToNumber(reader.uint64() as Long);
@@ -93,7 +93,7 @@ export const QueryProposal = {
       owner: isSet(object.owner) ? String(object.owner) : "",
       keyword: isSet(object.keyword) ? String(object.keyword) : "",
       groupId: isSet(object.groupId) ? String(object.groupId) : "",
-      type: isSet(object.type) ? Number(object.type) : 0,
+      type_: isSet(object.type_) ? Number(object.type_) : 0,
       lastValidHeight: isSet(object.lastValidHeight) ? Number(object.lastValidHeight) : 0,
       gateway: isSet(object.gateway) ? String(object.gateway) : "",
       commitId: isSet(object.commitId) ? String(object.commitId) : "",
@@ -106,7 +106,7 @@ export const QueryProposal = {
     message.owner !== undefined && (obj.owner = message.owner);
     message.keyword !== undefined && (obj.keyword = message.keyword);
     message.groupId !== undefined && (obj.groupId = message.groupId);
-    message.type !== undefined && (obj.type = Math.round(message.type));
+    message.type_ !== undefined && (obj.type_ = Math.round(message.type_));
     message.lastValidHeight !== undefined && (obj.lastValidHeight = Math.round(message.lastValidHeight));
     message.gateway !== undefined && (obj.gateway = message.gateway);
     message.commitId !== undefined && (obj.commitId = message.commitId);
@@ -119,7 +119,7 @@ export const QueryProposal = {
     message.owner = object.owner ?? "";
     message.keyword = object.keyword ?? "";
     message.groupId = object.groupId ?? "";
-    message.type = object.type ?? 0;
+    message.type_ = object.type_ ?? 0;
     message.lastValidHeight = object.lastValidHeight ?? 0;
     message.gateway = object.gateway ?? "";
     message.commitId = object.commitId ?? "";
